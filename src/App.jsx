@@ -5,6 +5,7 @@ import Countdown from "./components/Countdown";
 import EventDetails from "./components/EventDetails";
 import Location from "./components/Location";
 import RSVP from "./components/RSVP";
+import Footer from "./components/Footer";
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
       <EventDetails />
       <Location />
       <RSVP />
+      <Footer />
     </main>
   );
 }
