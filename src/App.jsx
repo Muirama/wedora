@@ -1,6 +1,11 @@
 import "./App.css";
 import Story from "./components/Story";
 import Gallery from "./components/Gallery";
+import Countdown from "./components/Countdown";
+import EventDetails from "./components/EventDetails";
+import Location from "./components/Location";
+import RSVP from "./components/RSVP";
+
 
 function App() {
   return (
@@ -36,6 +41,10 @@ function App() {
 
       <Story />
       <Gallery />
+      <Countdown />
+      <EventDetails />
+      <Location />
+      <RSVP />
     </main>
   );
 }

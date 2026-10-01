@@ -1,0 +1,141 @@
+.rsvp {
+  padding: 120px 30px;
+
+  background: #2d2926;
+
+  color: #f8f5f0;
+}
+
+.rsvp-container {
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 100px;
+}
+
+.rsvp-header h2,
+.rsvp-success h2 {
+  font-size: clamp(45px, 6vw, 75px);
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  margin-bottom: 35px;
+}
+
+.rsvp-header > p:last-child,
+.rsvp-success > p:last-child {
+  max-width: 400px;
+
+  line-height: 1.8;
+
+  opacity: 0.6;
+}
+
+.rsvp-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 25px;
+}
+
+.rsvp-form label {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+}
+
+.rsvp-form input,
+.rsvp-form select,
+.rsvp-form textarea {
+  width: 100%;
+
+  padding: 15px;
+
+  background: transparent;
+
+  border: 1px solid rgba(248, 245, 240, 0.3);
+
+  color: #f8f5f0;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 14px;
+
+  outline: none;
+}
+
+.rsvp-form select option {
+  color: #2d2926;
+}
+
+.rsvp-form textarea {
+  resize: vertical;
+}
+
+.rsvp-form button {
+  margin-top: 10px;
+
+  padding: 16px;
+
+  background: #f8f5f0;
+
+  color: #2d2926;
+
+  border: none;
+
+  cursor: pointer;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+
+  transition: 0.3s ease;
+}
+
+.rsvp-form button:hover {
+  opacity: 0.8;
+}
+
+.rsvp-success {
+  max-width: 700px;
+
+  margin: 0 auto;
+
+  text-align: center;
+
+  padding: 80px 0;
+}
+
+.rsvp-success .section-label {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 700px) {
+  .rsvp {
+    padding: 90px 25px;
+  }
+
+  .rsvp-container {
+    grid-template-columns: 1fr;
+
+    gap: 60px;
+  }
+}
