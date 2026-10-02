@@ -41,3 +41,22 @@ export function scrollToTarget(target) {
 
   target.scrollIntoView({ behavior: "smooth" });
 }
+
+// Bloque le scroll de la page (ex. : lightbox ouvert)
+export function pauseSmoothScroll() {
+  if (lenis) {
+    lenis.stop();
+    return;
+  }
+
+  document.documentElement.style.overflow = "hidden";
+}
+
+export function resumeSmoothScroll() {
+  if (lenis) {
+    lenis.start();
+    return;
+  }
+
+  document.documentElement.style.overflow = "";
+}
