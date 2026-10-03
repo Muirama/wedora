@@ -1,6 +1,6 @@
 .event-details {
-  padding: 120px 30px;
-  background: #f1ece4;
+  padding: var(--space-section) 30px;
+  background: var(--color-ivory);
 }
 
 .event-container {
@@ -8,80 +8,252 @@
   margin: 0 auto;
 }
 
-.events {
-  margin-top: 80px;
+/* ---------- Frise ---------- */
 
-  display: flex;
-  flex-direction: column;
+.program-list {
+  --time-col: clamp(120px, 20vw, 240px);
+  --line-col: 56px;
+  --line-x: calc(var(--time-col) + var(--line-col) / 2);
 
-  border-top: 1px solid rgba(45, 41, 38, 0.2);
+  list-style: none;
 }
 
-.event-card {
+.program-row {
+  --time-size: clamp(2.8rem, 6vw, 4.6rem);
+  --row-pad: clamp(36px, 6vw, 68px);
+
+  position: relative;
+
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: var(--time-col) var(--line-col) 1fr;
+  grid-template-areas: "time dot content";
 
-  gap: 50px;
-
-  padding: 50px 0;
-
-  border-bottom: 1px solid rgba(45, 41, 38, 0.2);
+  padding: var(--row-pad) 0;
 }
 
-.event-number {
-  font-family: Arial, sans-serif;
+/* Heure */
+.program-time {
+  grid-area: time;
+  align-self: start;
 
-  font-size: 11px;
+  font-family: var(--font-display);
+  font-size: var(--time-size);
+  font-weight: 300;
+  line-height: 1;
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
 
-  letter-spacing: 2px;
-
-  opacity: 0.5;
+  color: var(--color-ink-soft);
+  transition: color 0.8s var(--ease-out-expo);
 }
 
-.event-time {
-  font-family: Arial, sans-serif;
-
-  font-size: 11px;
-
-  letter-spacing: 3px;
-
-  margin-bottom: 15px;
-
-  opacity: 0.5;
+.program-row.is-active .program-time {
+  color: var(--color-ink);
 }
 
-.event-card h3 {
-  font-size: 38px;
+/* Point sur la ligne */
+.program-dot {
+  grid-area: dot;
+  justify-self: center;
+  align-self: start;
+  z-index: 1;
 
+  position: relative;
+  width: 16px;
+  height: 16px;
+  margin-top: calc(var(--time-size) * 0.5 - 8px);
+
+  border: 1px solid var(--color-gold);
+  border-radius: 50%;
+  background: var(--color-ivory);
+}
+
+/* Remplissage doré quand l'étape est atteinte */
+.program-dot::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--color-gold);
+
+  transform: scale(0);
+  transition: transform 0.8s var(--ease-out-expo);
+}
+
+.program-row.is-active .program-dot::after {
+  transform: scale(1);
+}
+
+/* Onde qui se propage une fois à l'allumage */
+.program-dot::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--color-gold);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.program-row.is-active .program-dot::before {
+  animation: programPulse 1.8s var(--ease-out-expo) 1;
+}
+
+@keyframes programPulse {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* Trait entre deux étapes : de ce point jusqu'au suivant */
+.program-segment {
+  position: absolute;
+  left: var(--line-x);
+  top: calc(var(--row-pad) + var(--time-size) * 0.5);
+  width: 1px;
+  height: 100%;
+  transform: translateX(-50%);
+
+  background: rgba(45, 41, 38, 0.14);
+  overflow: hidden;
+}
+
+.program-segment-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--color-gold);
+  transform-origin: top center;
+}
+
+.program-row:last-child .program-segment {
+  display: none;
+}
+
+/* Contenu */
+.program-content {
+  grid-area: content;
+  padding-left: clamp(24px, 4vw, 56px);
+
+  transition: transform 0.9s var(--ease-out-expo);
+}
+
+.program-index {
+  display: block;
+  margin-bottom: 14px;
+
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  color: var(--color-gold);
+}
+
+.program-title {
+  margin-bottom: 18px;
+
+  font-size: clamp(2rem, 4.2vw, 3.2rem);
   font-weight: 400;
-
-  margin-bottom: 15px;
+  line-height: 1.1;
 }
 
-.event-card p {
-  max-width: 600px;
+.program-text {
+  max-width: 34rem;
 
-  font-size: 16px;
-
-  line-height: 1.8;
-
-  opacity: 0.65;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-ink-soft);
 }
 
-@media (max-width: 600px) {
+/* Survol (appareils avec souris) */
+@media (hover: hover) {
+  .program-row:hover .program-content {
+    transform: translateX(12px);
+  }
+
+  .program-row:hover .program-time {
+    color: var(--color-gold);
+  }
+}
+
+/* ---------- État initial (révélé par GSAP) ---------- */
+
+.event-details .program-time,
+.event-details .program-title,
+.event-details .program-text {
+  visibility: hidden;
+}
+
+.event-details .program-dot,
+.event-details .program-index,
+.event-details .program-segment {
+  opacity: 0;
+}
+
+.event-details .program-segment-fill {
+  transform: scaleY(0);
+}
+
+/* Sans JavaScript ou avec mouvement réduit : tout est visible */
+@media (scripting: none), (prefers-reduced-motion: reduce) {
+  .event-details .program-time,
+  .event-details .program-title,
+  .event-details .program-text {
+    visibility: visible;
+  }
+
+  .event-details .program-dot,
+  .event-details .program-index,
+  .event-details .program-segment {
+    opacity: 1;
+  }
+
+  .event-details .program-segment-fill {
+    transform: none;
+  }
+
+  .program-dot::after {
+    transform: scale(1);
+  }
+
+  .program-time {
+    color: var(--color-ink);
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 700px) {
   .event-details {
-    padding: 90px 25px;
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
-  .event-card {
-    grid-template-columns: 1fr;
-
-    gap: 20px;
-
-    padding: 40px 0;
+  .program-list {
+    --line-col: 34px;
+    --line-x: calc(var(--line-col) / 2);
   }
 
-  .event-card h3 {
-    font-size: 30px;
+  .program-row {
+    --time-size: 2.6rem;
+
+    grid-template-columns: var(--line-col) 1fr;
+    grid-template-areas:
+      "dot time"
+      "dot content";
+  }
+
+  .program-time {
+    text-align: left;
+    padding-left: 14px;
+  }
+
+  .program-content {
+    padding-left: 14px;
+    padding-top: 16px;
   }
 }

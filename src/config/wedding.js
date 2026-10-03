@@ -6,6 +6,9 @@ const TIMEZONE = "Indian/Antananarivo"; // UTC+3
 // Heure de la cérémonie, avec le fuseau explicite (+03:00)
 const DATE = new Date("2027-08-15T10:00:00+03:00");
 
+// Fin de la journée (utilisée pour l'événement "Ajouter au calendrier")
+const END_DATE = new Date("2027-08-15T23:00:00+03:00");
+
 const format = (options) =>
   new Intl.DateTimeFormat("fr-FR", { timeZone: TIMEZONE, ...options });
 
@@ -17,6 +20,12 @@ const parts = format({
 
 const getPart = (type) => parts.find((part) => part.type === type).value;
 
+const VENUE_NAME = "Le Jardin des Roses";
+const VENUE_ADDRESS = [
+  "25 Avenue de l'Indépendance",
+  "Antananarivo, Madagascar",
+];
+
 export const wedding = {
   couple: {
     first: "Andria",
@@ -24,6 +33,7 @@ export const wedding = {
   },
 
   date: DATE,
+  endDate: END_DATE,
   timezone: TIMEZONE,
 
   dateParts: {
@@ -40,11 +50,22 @@ export const wedding = {
     year: "numeric",
   }).format(DATE),
 
+  // "10h00"
+  timeLabel: format({ hour: "2-digit", minute: "2-digit" })
+    .format(DATE)
+    .replace(":", "h"),
+
   rsvpDeadline: "1er juillet 2027",
 
   venue: {
-    name: "Le Jardin des Roses",
-    addressLines: ["25 Avenue de l'Indépendance", "Antananarivo, Madagascar"],
+    name: VENUE_NAME,
+    addressLines: VENUE_ADDRESS,
+
+    // Par défaut : recherche Google Maps à partir du nom et de l'adresse.
+    // Pour un lien exact, remplace par le lien "Partager" de Google Maps.
+    mapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      `${VENUE_NAME}, ${VENUE_ADDRESS.join(", ")}`,
+    )}`,
   },
 
   program: [

@@ -1,113 +1,403 @@
 .location {
-  padding: 120px 30px;
-
-  background: #f8f5f0;
+  padding: var(--space-section) 30px;
+  background: var(--color-cream);
+  overflow: hidden;
 }
 
 .location-container {
-  max-width: 1200px;
-
+  max-width: var(--container);
   margin: 0 auto;
 
   display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 80px;
-
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(48px, 7vw, 110px);
   align-items: center;
 }
 
-.location-content h2 {
-  font-size: clamp(45px, 6vw, 75px);
-
-  font-weight: 400;
-
-  line-height: 1;
-
-  margin-bottom: 50px;
+.location .section-header-block {
+  margin-bottom: clamp(36px, 5vw, 56px);
 }
 
-.location-info {
-  margin-bottom: 40px;
+/* ---------- Informations ---------- */
+
+.location-details {
+  margin: 0;
 }
 
-.location-info h3 {
-  font-size: 25px;
+.location-row {
+  position: relative;
 
-  font-weight: 400;
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 20px;
 
-  margin-bottom: 20px;
+  padding: 26px 0;
 }
 
-.location-info p {
-  margin-bottom: 20px;
-
-  font-size: 15px;
-
-  line-height: 1.8;
-
-  opacity: 0.65;
+.location-row:last-child {
+  border-bottom: 1px solid rgba(45, 41, 38, 0.18);
 }
 
-.map-button {
-  display: inline-block;
+.location-row-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
 
-  padding: 15px 25px;
+  background: rgba(45, 41, 38, 0.18);
+  transform-origin: left center;
+}
 
-  border: 1px solid #2d2926;
+.location-row-label {
+  padding-top: 0.7em;
 
-  color: #2d2926;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.35em;
+  color: var(--color-gold);
+}
 
+.location-row-value {
+  margin: 0;
+
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  line-height: 1.45;
+  color: var(--color-ink);
+}
+
+.location-row-value--name {
+  font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+  line-height: 1.1;
+}
+
+.location-line {
+  display: block;
+}
+
+.location-note {
+  display: block;
+  margin-top: 6px;
+
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--color-ink-soft);
+}
+
+/* ---------- Actions ---------- */
+
+.location-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px 34px;
+
+  margin-top: clamp(32px, 5vw, 48px);
+}
+
+.location-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 18px 30px;
+
+  border: 1px solid rgba(45, 41, 38, 0.55);
+  color: var(--color-ink);
   text-decoration: none;
 
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 
-  font-size: 10px;
-
-  letter-spacing: 2px;
-
-  transition: 0.3s ease;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    color 0.5s var(--ease-out-expo),
+    border-color 0.5s var(--ease-out-expo);
 }
 
-.map-button:hover {
-  background: #2d2926;
-
-  color: #fff;
+.location-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-ink);
+  transform: translateY(101%);
+  transition: transform 0.6s var(--ease-out-expo);
 }
 
-.map-placeholder {
-  min-height: 500px;
+.location-button svg {
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.location-button:hover,
+.location-button:focus-visible {
+  color: var(--color-cream);
+  border-color: var(--color-ink);
+}
+
+.location-button:hover::before,
+.location-button:focus-visible::before {
+  transform: translateY(0);
+}
+
+.location-button:hover svg,
+.location-button:focus-visible svg {
+  transform: translate(3px, -3px);
+}
+
+/* Lien souligné : le trait se redessine au survol */
+.location-link {
+  padding: 6px 0;
+
+  border: 0;
+  background: linear-gradient(var(--color-gold), var(--color-gold)) left
+    bottom / 100% 1px no-repeat;
+  color: var(--color-ink);
+
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+
+  transition:
+    background-size 0.6s var(--ease-out-expo),
+    color 0.4s var(--ease-out-expo);
+}
+
+.location-link:hover,
+.location-link:focus-visible {
+  background-size: 0% 1px;
+  background-position: right bottom;
+  color: var(--color-gold);
+}
+
+/* ---------- Carte ---------- */
+
+.location-map {
+  position: relative;
+  display: block;
+
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(255, 255, 255, 0.5),
+      transparent 55%
+    ),
+    var(--color-sand);
+  color: inherit;
+  text-decoration: none;
+}
+
+.location-map-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  /* "scale" (propriété CSS) est indépendant du transform animé par GSAP */
+  scale: 1.12;
+  transition: scale 1.6s var(--ease-out-expo);
+  will-change: transform;
+}
+
+.location-map:hover .location-map-svg,
+.location-map:focus-visible .location-map-svg {
+  scale: 1.2;
+}
+
+.location-road {
+  fill: none;
+  stroke: rgba(45, 41, 38, 0.3);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.location-road--minor {
+  stroke: rgba(45, 41, 38, 0.16);
+}
+
+.location-road--main {
+  stroke: var(--color-gold);
+  stroke-width: 2.2;
+}
+
+.location-garden {
+  fill: rgba(217, 195, 160, 0.38);
+}
+
+/* Épingle */
+.location-pin-dot {
+  fill: var(--color-gold);
+}
+
+.location-pin-core {
+  fill: var(--color-cream);
+}
+
+.location-pin-ring {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 1.2;
+
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: locationPing 2.8s var(--ease-out-expo) infinite;
+}
+
+.location-pin-ring--late {
+  animation-delay: 1.4s;
+}
+
+@keyframes locationPing {
+  from {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(4.2);
+    opacity: 0;
+  }
+}
+
+.location-compass {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid rgba(45, 41, 38, 0.3);
+  border-radius: 50%;
+
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-soft);
+}
+
+/* Bandeau du lieu */
+.location-chip {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
 
   display: flex;
-
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
 
-  justify-content: center;
+  padding: 16px 20px;
 
-  background: #e5ded4;
+  background: rgba(248, 245, 240, 0.86);
+  backdrop-filter: blur(8px);
+  color: var(--color-ink);
 
-  font-family: Arial, sans-serif;
-
-  font-size: 10px;
-
-  letter-spacing: 4px;
-
-  opacity: 0.7;
+  transition:
+    background 0.5s var(--ease-out-expo),
+    color 0.5s var(--ease-out-expo);
 }
 
-@media (max-width: 700px) {
+.location-map:hover .location-chip,
+.location-map:focus-visible .location-chip {
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+
+.location-chip-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+.location-chip-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+/* ---------- État initial (révélé par GSAP) ---------- */
+
+.location .location-row,
+.location .location-row-rule,
+.location .location-action,
+.location .location-chip,
+.location .location-pin,
+.location .location-garden {
+  opacity: 0;
+}
+
+.location .location-map {
+  clip-path: inset(0% 0% 0% 100%);
+}
+
+/* Sans JavaScript ou avec mouvement réduit : tout est visible */
+@media (scripting: none), (prefers-reduced-motion: reduce) {
+  .location .location-row,
+  .location .location-row-rule,
+  .location .location-action,
+  .location .location-chip,
+  .location .location-pin,
+  .location .location-garden {
+    opacity: 1;
+  }
+
+  .location .location-map {
+    clip-path: none;
+  }
+
+  .location-pin-ring {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ---------- Tablette / mobile ---------- */
+
+@media (max-width: 860px) {
   .location {
-    padding: 90px 25px;
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
   .location-container {
     grid-template-columns: 1fr;
-
-    gap: 50px;
+    gap: 56px;
   }
 
-  .map-placeholder {
-    min-height: 350px;
+  .location-map {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .location-row {
+    grid-template-columns: 5.5rem 1fr;
+    gap: 12px;
+  }
+
+  .location-button {
+    padding: 16px 24px;
+  }
+
+  .location-map {
+    aspect-ratio: 4 / 5;
   }
 }
